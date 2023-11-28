@@ -37,7 +37,7 @@ jobs:
     - name: Release
       run: dotnet publish -c Release
     - name: Package
-      run: zip -r ${{ env.DeployFileName }} ${{ env.DeployDir }}
+      run: zip -r ${{ env.DeployFileName }} ${{ env.DeployPath }}
     - name: Publish
       uses: actions/create-release@v1
       env:
