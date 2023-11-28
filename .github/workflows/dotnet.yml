@@ -58,6 +58,9 @@ jobs:
           - Change 2
         draft: true
         prerelease: false
+
+    - name: Tree
+      run: tree
         
     - name: Upload
       uses: actions/upload-release-asset@v1
