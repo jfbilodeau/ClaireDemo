@@ -39,10 +39,10 @@ jobs:
     #   run: dotnet test --no-build --verbosity normal
     
     - name: Release
-      run: dotnet publish -c Release -o ${{ env.DeployPath }}
+      run: dotnet publish Claire -c Release -o ${{ env.DeployPath }}
       
     - name: Package
-      run: zip -r ${{ env.DeployFileName }} ${{ env.DeployPath }}
+      run: zip -r ${{ env.DeployFileName }}/* ${{ env.DeployPath }}
       
     - name: Tree
       run: tree
