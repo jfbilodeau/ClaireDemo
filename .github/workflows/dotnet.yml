@@ -45,9 +45,6 @@ jobs:
     - name: Package
       run: cd ${{ env.DeployPath }} && zip -r ${{ env.DeployFileName }} *
       
-    - name: Tree
-      run: tree
-        
     - name: Publish
       id: publish
       uses: softprops/action-gh-release@v1
@@ -66,4 +63,4 @@ jobs:
 
     - name: Report
       run: |
-        echo "Published ${{ steps.publish.outputs.id }} at ${{ steps.publish.output.url }}"
+        echo "Published ${{ steps.publish.outputs.id }} at ${{ steps.publish.outputs.url }}"
