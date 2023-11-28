@@ -8,6 +8,12 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  OpenAiUrl: ${{ secrets.OpenAiUrl }}
+  OpenAiModel: ${{ vars.OpenAiModel }}
+  OpenAiKey: ${{ secrets.OpenAiKey }}
 
 jobs:
   build:
@@ -15,6 +21,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Test Env
+      run: |
+        echo "OpenAiUrl: $OpenAiUrl, OpenAiModel: $OpenAiModel, OpenAiKey: $OpenAiKey"
+        
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3

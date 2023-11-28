@@ -16,7 +16,7 @@ public class TestCommand
     [InlineData("How do I change directory?", "cd")]
     [InlineData("How do I create a new directory?", "(md|mkdir)")]
     [InlineData("How do I create a new directory called example?", "(md|mkdir) example")]
-    [InlineData("Delete a file called test.txt", "del test.txt")]
+    [InlineData("Delete a file called test.txt", "(rm|del) test.txt")]
     [InlineData("Close the command prompt", "exit")]
     public async void ExecuteCommand(string prompt, string expectedCommand)
     {
