@@ -14,7 +14,7 @@ env:
   OpenAiUrl: ${{ secrets.OpenAiUrl }}
   OpenAiModel: ${{ vars.OpenAiModel }}
   OpenAiKey: ${{ secrets.OpenAiKey }}
-  DeployPath: ./Claire/bin/Release/net8.0/publish
+  DeployPath: ./release
   DeployFileName: Claire.zip
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
     # - name: Test
     #   run: dotnet test --no-build --verbosity normal
     - name: Release
-      run: dotnet publish -c Release
+      run: dotnet publish -c Release -o ${{ env.DeployPath }}
     - name: Package
       run: zip -r ${{ env.DeployFileName }} ${{ env.DeployPath }}
     - name: Publish
