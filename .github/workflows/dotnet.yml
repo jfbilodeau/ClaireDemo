@@ -11,7 +11,7 @@ on:
 
 env:
   OpenAiUrl: ${{ secrets.OpenAiUrl }}
-  OpenAiModel: ${{ var.OpenAiModel }}
+  OpenAiModel: ${{ vars.OpenAiModel }}
   OpenAiKey: $${ secrets.OpenAiSecrets }}
 
 jobs:
