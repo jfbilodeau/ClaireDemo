@@ -13,7 +13,7 @@ on:
 env:
   OpenAiUrl: ${{ secrets.OpenAiUrl }}
   OpenAiModel: ${{ vars.OpenAiModel }}
-  OpenAiKey: $${ secrets.OpenAiKey }}
+  OpenAiKey: $${{ secrets.OpenAiKey }}
 
 jobs:
   build:
