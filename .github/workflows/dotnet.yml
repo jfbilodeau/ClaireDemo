@@ -42,7 +42,7 @@ jobs:
       run: dotnet publish Claire -c Release -o ${{ env.DeployPath }}
       
     - name: Package
-      run: zip -jr ${{ env.DeployFileName }} ${{ env.DeployPath }}/*
+      run: cd ${{ env.DeployPath }} && zip -r ${{ env.DeployFileName }} *
       
     - name: Tree
       run: tree
@@ -61,6 +61,6 @@ jobs:
           - Change 2
         draft: true
         prerelease: false
-        files: ./${{ env.DeployFileName }}
+        files: .${{ env.DeployPath }}/${{ env.DeployFileName }}
 
       
