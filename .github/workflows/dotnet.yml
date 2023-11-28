@@ -37,7 +37,7 @@ jobs:
     - name: Release
       run: dotnet publish -c Release
     - name: Package
-      run: zip -r $DeployFileName $DeployDir
+      run: zip -r ${{ DeployFileName }} ${{ DeployDir }}
     - name: Publish
       uses: actions/create-release@v1
       env:
@@ -58,7 +58,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: $${ DeployPath }}/${{ DeployFileName }}
-        asset_name: ${{ZipName }}
+        asset_name: ${{ DeployFileName }}
         asset_content_type: application/gzip
 
       
