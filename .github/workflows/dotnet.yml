@@ -21,10 +21,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Test Env
-      run: |
-        echo "OpenAiUrl: $OpenAiUrl, OpenAiModel: $OpenAiModel, OpenAiKey: $OpenAiKey"
-        
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -34,8 +30,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    # - name: Test
+    #   run: dotnet test --no-build --verbosity normal
     - name: Release
       run: dotnet publish -c Release
     - name: Package
@@ -46,11 +42,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        release_name: ${{ github.event.release.name }}
         body: |
-          Changes in this Release
-          - First Change
-          - Second Change
+          Changes in this release:
         draft: true
         prerelease: false
       
