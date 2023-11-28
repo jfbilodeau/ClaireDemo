@@ -21,9 +21,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # - name: Test Env
-    #   run: \
-    #     echo "OpenAiRul: $OpenAiUrl, OpenAiModel: $OpenAiModel, OpenAiKey: $OpenAiKey"
+    - name: Test Env
+      run: |
+        echo "OpenAiUrl: $OpenAiUrl, OpenAiModel: $OpenAiModel, OpenAiKey: $OpenAiKey"
+        
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
