@@ -23,21 +23,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
+      
     - name: Build
       run: dotnet build --no-restore
     # - name: Test
     #   run: dotnet test --no-build --verbosity normal
+    
     - name: Release
       run: dotnet publish -c Release -o ${{ env.DeployPath }}
+      
     - name: Package
       run: zip -r ${{ env.DeployFileName }} ${{ env.DeployPath }}
+      
     - name: Publish
       id: publish
       uses: actions/create-release@v1
@@ -45,14 +51,15 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v1.0.0.X-${{ github.head_ref }}
-        release_name: ${{ github.event.release.name }}
+        release_name: Release v1.0.0.X${{ github.event.release.name }}
         body: |
           Changes in this release:
-        
+          - Change 1
+          - Change 2
         draft: true
         prerelease: false
-
-    - name: Upload artifact
+        
+    - name: Upload
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
