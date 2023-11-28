@@ -59,7 +59,7 @@ jobs:
           - Change 2
         draft: true
         prerelease: false
-        files: .${{ env.DeployPath }}/${{ env.DeployFileName }}
+        files: ${{ env.DeployPath }}/${{ env.DeployFileName }}
 
     - name: Report
       run: |
