@@ -35,6 +35,7 @@ jobs:
       
     - name: Build
       run: dotnet build --no-restore
+      
     # - name: Test
     #   run: dotnet test --no-build --verbosity normal
     
@@ -63,4 +64,6 @@ jobs:
         prerelease: false
         files: .${{ env.DeployPath }}/${{ env.DeployFileName }}
 
-      
+    - name: Report
+      run: |
+        echo "Published ${{ steps.publish.outputs.id }} at ${{ steps.publish.output.url }}"
