@@ -14,6 +14,8 @@ env:
   OpenAiUrl: ${{ secrets.OpenAiUrl }}
   OpenAiModel: ${{ vars.OpenAiModel }}
   OpenAiKey: ${{ secrets.OpenAiKey }}
+  DeployPath: ./Claire/bin/Release/net8.0/publish
+  DeployFileName: Claire.zip
 
 jobs:
   build:
@@ -35,16 +37,28 @@ jobs:
     - name: Release
       run: dotnet publish -c Release
     - name: Package
-      run: zip -r Claire.zip ./Claire/bin/Release/net8.0/publish/
+      run: zip -r $DeployFileName $DeployDir
     - name: Publish
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
+        tag_name: v1.0.0.X-${{ github.head_ref }}
         release_name: ${{ github.event.release.name }}
         body: |
           Changes in this release:
+        
         draft: true
         prerelease: false
+
+    - name: Upload artifact
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: $${ DeployPath }}/${{ DeployFileName }}
+        asset_name: ${{ZipName }}
+        asset_content_type: application/gzip
+
       
