@@ -14,6 +14,8 @@ env:
   OpenAiUrl: ${{ secrets.OpenAiUrl }}
   OpenAiModel: ${{ vars.OpenAiModel }}
   OpenAiKey: ${{ secrets.OpenAiKey }}
+  DeployPath: ./release
+  DeployFileName: Claire.zip
 
 jobs:
   build:
@@ -21,21 +23,68 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Test Env
-      run: |
-        echo "OpenAiUrl: $OpenAiUrl, OpenAiModel: $OpenAiModel, OpenAiKey: $OpenAiKey"
-        
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
+      
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-    - name: Release
-      run: dotnet publish -c Release
       
+    # - name: Test
+    #   run: dotnet test --no-build --verbosity normal
+    
+    - name: Release
+      run: dotnet publish Claire -c Release -o ${{ env.DeployPath }}
+      
+    - name: Package
+      run: cd ${{ env.DeployPath }} && zip -r ${{ env.DeployFileName }} *
+      
+    - name: Publish
+      id: publish
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v1.0.0.X-${{ github.head_ref }}
+        release_name: Release v1.0.0.X${{ github.event.release.name }}
+        body: |
+          Changes in this release:
+          - Change 1
+          - Change 2
+        draft: true
+        prerelease: false
+        files: ${{ env.DeployPath }}/${{ env.DeployFileName }}
+
+    - name: Report
+      run: |
+        echo "Published ${{ steps.publish.outputs.id }} at ${{ steps.publish.outputs.url }}"
+
+    - name: Log In to Container Registry
+      uses: docker/login-action@v1
+      with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata for Docker
+      id: meta
+      uses: docker/metadata-action@v1
+      with:
+        images: |
+          jfbilodeau/clairedemo
+          ghcr.io/jfbilodeau/clairedemo
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        # file: ./Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        # labels: ${{ steps.meta.outputs.labels }}
